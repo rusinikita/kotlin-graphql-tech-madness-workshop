@@ -1,17 +1,45 @@
 const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
+const { importSchema } = require('graphql-import')
 
 // Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    hello: String
+const schema = buildSchema(importSchema(`../schema.graphql`))
+
+function getSubscription() {
+  return {
+    type: 'NONE',
+    expirationDate: null,
   }
-`)
+}
+
+function getPermissions() {
+  return [
+    { type: 'WRITE_COMMENTS' },
+    { type: 'CHANGE_NAME' },
+    { type: 'CANCEL_PREMIUM' },
+    { type: 'CRY' },
+    { type: 'KICK_CHILDREN' },
+  ]
+}
+
+function getUser(firstName, surname) {
+  return {
+    id: "asdf",
+    status: 'ACTIVE',
+    subscription: getSubscription,
+    permissions: getPermissions,
+    name: {
+      firstName: firstName || "Name",
+      surname: surname || "Surname",
+    },
+  }
+}
 
 // The root provides a resolver function for each API endpoint
 const root = {
-  hello: () => 'Hello world!',
+  user: () => getUser(),
+  updateFullname: ({ firstName, surname }) => getUser(firstName, surname),
 }
 
 const app = express();

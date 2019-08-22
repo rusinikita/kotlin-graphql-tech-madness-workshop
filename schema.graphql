@@ -1,0 +1,52 @@
+
+scalar Date
+
+enum Status {
+    ACTIVE
+    UNACTIVE
+    BLOCKED
+}
+
+enum SubscriptionType {
+    NONE
+    BASIC
+    PREMIUM
+}
+
+enum PermissionType {
+    WRITE_COMMENTS
+    CHANGE_NAME
+    CANCEL_PREMIUM
+    CRY
+    KICK_CHILDREN
+}
+
+type Subscription {
+    type: SubscriptionType!
+    expirationDate: Date
+}
+
+type Permission {
+    type: PermissionType!
+}
+
+type User {
+    id: String!
+    status: Status!
+    subscription: Subscription!
+    permissions: [Permission]!
+    name: FullName!
+}
+
+type FullName {
+    firstName: String!
+    surname: String!
+}
+
+type Query {
+    user: User!
+}
+
+type Mutation {
+    updateFullname(firstName: String!, surname: String!): User!
+}
