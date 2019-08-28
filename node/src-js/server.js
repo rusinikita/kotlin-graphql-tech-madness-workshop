@@ -76,9 +76,9 @@ function getUser(id) {
 function updateUser(id, firstName, surname) {
   return {
     id: id,
-    status: STATUS_ACTIVE,
+    status: (id) => getUserStatus(id),
     subscription: (id) => getSubscription(id),
-    permissions: (id) => getPermissions(id),
+    permissions: (id) => getPermissions(getUserStatus(id), getSubscription(id).type),
     name: {
       firstName: firstName,
       surname: surname,
@@ -88,7 +88,7 @@ function updateUser(id, firstName, surname) {
 
 // The root provides a resolver function for each API endpoint
 const root = {
-  user: () => getUser(),
+  user: ({ id }) => getUser(id),
   updateFullname: ({ firstName, surname }) => updateUser(firstName, surname),
 }
 
