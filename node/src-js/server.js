@@ -3,35 +3,85 @@ const graphqlHTTP = require('express-graphql')
 const { buildSchema } = require('graphql')
 const { importSchema } = require('graphql-import')
 
+const STATUS_ACTIVE = 'ACTIVE'
+const STATUS_UNACTIVE = 'UNACTIVE'
+const STATUS_BLOCKED = 'BLOCKED'
+
+const SUBSCRIPTION_NONE = 'NONE'
+const SUBSCRIPTION_BASIC = 'BASIC'
+const SUBSCRIPTION_PREMIUM = 'PREMIUM'
+
+const PERMISSION_WRITE_COMMENTS = 'WRITE_COMMENTS'
+const PERMISSION_CHANGE_NAME = 'CHANGE_NAME'
+const PERMISSION_CRY = 'CRY'
+const PERMISSION_CANCEL_PREMIUM = 'CANCEL_PREMIUM'
+const PERMISSION_KICK_CHILDREN = 'KICK_CHILDREN'
+
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(importSchema(`../schema.graphql`))
 
-function getSubscription() {
+function getUserStatus(id) {
+  return STATUS_ACTIVE
+}
+
+function getSubscription(id) {
   return {
-    type: 'NONE',
+    type: SUBSCRIPTION_NONE,
     expirationDate: null,
   }
 }
 
-function getPermissions() {
-  return [
-    { type: 'WRITE_COMMENTS' },
-    { type: 'CHANGE_NAME' },
-    { type: 'CANCEL_PREMIUM' },
-    { type: 'CRY' },
-    { type: 'KICK_CHILDREN' },
-  ]
+function getPermissions(status, subscriptionType) {
+  let permissions = []
+
+  // default
+  permissions.push({ type: PERMISSION_CRY })
+
+  // active user permissions
+  if (status == STATUS_ACTIVE) {
+    permissions.push(
+      { type: PERMISSION_CHANGE_NAME },
+    )
+
+    // subscription based
+    if (subscriptionType != SUBSCRIPTION_NONE) {
+      permissions.push(
+        { type: PERMISSION_WRITE_COMMENTS },
+      )
+    }
+    if (subscriptionType == SUBSCRIPTION_PREMIUM) {
+      permissions.push(
+        { type: PERMISSION_CANCEL_PREMIUM },
+        { type: PERMISSION_KICK_CHILDREN },
+      )
+    }
+  }
+
+  return permissions
 }
 
-function getUser(firstName, surname) {
+function getUser(id) {
   return {
-    id: "asdf",
-    status: 'ACTIVE',
-    subscription: getSubscription,
-    permissions: getPermissions,
+    id: id,
+    status: (id) => getUserStatus(id),
+    subscription: (id) => getSubscription(id),
+    permissions: (id) => getPermissions(getUserStatus(id), getSubscription(id).type),
     name: {
-      firstName: firstName || "Name",
-      surname: surname || "Surname",
+      firstName: 'Name',
+      surname: 'Surname',
+    },
+  }
+}
+
+function updateUser(id, firstName, surname) {
+  return {
+    id: id,
+    status: STATUS_ACTIVE,
+    subscription: (id) => getSubscription(id),
+    permissions: (id) => getPermissions(id),
+    name: {
+      firstName: firstName,
+      surname: surname,
     },
   }
 }
@@ -39,7 +89,7 @@ function getUser(firstName, surname) {
 // The root provides a resolver function for each API endpoint
 const root = {
   user: () => getUser(),
-  updateFullname: ({ firstName, surname }) => getUser(firstName, surname),
+  updateFullname: ({ firstName, surname }) => updateUser(firstName, surname),
 }
 
 const app = express();
