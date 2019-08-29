@@ -1,7 +1,8 @@
-const express = require('express')
-const graphqlHTTP = require('express-graphql')
+const { GraphQLServer } = require('graphql-yoga')
 const { buildSchema } = require('graphql')
 const { importSchema } = require('graphql-import')
+
+const ACCESS_TOKEN_HEADER = "Access"
 
 const STATUS_ACTIVE = 'ACTIVE'
 const STATUS_UNACTIVE = 'UNACTIVE'
@@ -19,6 +20,13 @@ const PERMISSION_KICK_CHILDREN = 'KICK_CHILDREN'
 
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(importSchema(`../schema.graphql`))
+
+function getUserIdFromAccessToken(token) {
+  if (!token) {
+    throw 'Access token required'
+  }
+  return token.split('_', 1)[0]
+}
 
 function getUserStatus(id) {
   return STATUS_ACTIVE
@@ -86,18 +94,27 @@ function updateUser(id, firstName, surname) {
   }
 }
 
-// The root provides a resolver function for each API endpoint
-const root = {
-  user: ({ id }) => getUser(id),
-  updateFullname: ({ firstName, surname }) => updateUser(firstName, surname),
+const resolvers = {
+  Query: {
+    user(parent, { id }, context) {
+      return getUser(id)
+    },
+    self(parent, args, context) {
+      let id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
+      return getUser(id)
+    }
+  },
+  Mutation: {
+    updateFullname(parent, { firstName, surname }, context) {
+      let id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
+      return updateUser(id, firstName, surname)
+    }
+  }
 }
 
-const app = express();
-app.use('/graphql', graphqlHTTP({
-  schema,
-  rootValue: root,
-  graphiql: true,
-}))
-app.listen(4000)
-// eslint-disable-next-line no-console
-console.log('Running a GraphQL API server at localhost:4000/graphql')
+const server = new GraphQLServer({
+  typeDefs: `../schema.graphql`,
+  resolvers,
+  context: req => ({ ...req }) // context for request information
+})
+server.start(() => console.log('Server is running on http://localhost:4000'))

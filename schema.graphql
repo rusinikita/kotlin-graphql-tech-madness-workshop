@@ -44,7 +44,8 @@ type FullName {
 }
 
 type Query {
-    user(id: String): User!
+    user(id: String!): User!
+    self: User!
 }
 
 type Mutation {

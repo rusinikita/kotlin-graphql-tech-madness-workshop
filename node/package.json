@@ -11,14 +11,16 @@
   "author": "me",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "express-graphql": "^0.9.0",
     "graphql": "^14.4.2",
-    "graphql-import": "^0.7.1"
+    "graphql-yoga": "^1.18.3"
   },
   "devDependencies": {
+    "@types/graphql": "^14.5.0",
+    "@types/node": "^12.7.2",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint-plugin-import": "^2.18.2",
+    "graphql-typescript-definitions": "^0.17.3",
+    "typescript": "^3.5.3"
   }
 }
