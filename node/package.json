@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "run-js": "node src-js/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-ts": "npm run build-ts && node build-ts/server.js",
+    "build-ts": "npm run generate-ts && tsc",
+    "generate-ts": "graphql-codegen --config codegen.yml"
   },
   "repository": {},
   "author": "me",
   "license": "ISC",
   "dependencies": {
-    "graphql": "^14.4.2",
+    "@graphql-codegen/cli": "^1.6.1",
+    "graphql": "^14.5.4",
     "graphql-yoga": "^1.18.3"
   },
   "devDependencies": {
@@ -20,7 +24,9 @@
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
-    "graphql-typescript-definitions": "^0.17.3",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "@graphql-codegen/typescript": "1.6.1",
+    "@graphql-codegen/typescript-resolvers": "1.6.1",
+    "@graphql-codegen/introspection": "1.6.1"
   }
 }

@@ -1,5 +1,11 @@
+type Query {
+    user(id: String!): User!
+    self: User!
+}
 
-scalar Date
+type Mutation {
+    updateFullname(firstName: String!, surname: String!): User!
+}
 
 enum Status {
     ACTIVE
@@ -21,15 +27,6 @@ enum PermissionType {
     KICK_CHILDREN
 }
 
-type Subscription {
-    type: SubscriptionType!
-    expirationDate: Date
-}
-
-type Permission {
-    type: PermissionType!
-}
-
 type User {
     id: String!
     status: Status!
@@ -38,16 +35,15 @@ type User {
     name: FullName!
 }
 
+type Subscription {
+    type: SubscriptionType!
+}
+
+type Permission {
+    type: PermissionType!
+}
+
 type FullName {
     firstName: String!
     surname: String!
-}
-
-type Query {
-    user(id: String!): User!
-    self: User!
-}
-
-type Mutation {
-    updateFullname(firstName: String!, surname: String!): User!
 }
