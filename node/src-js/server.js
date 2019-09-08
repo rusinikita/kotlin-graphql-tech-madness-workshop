@@ -34,8 +34,7 @@ function getUserStatus(id) {
 
 function getSubscription(id) {
   return {
-    type: SUBSCRIPTION_NONE,
-    expirationDate: null,
+    type: SUBSCRIPTION_NONE
   }
 }
 
@@ -71,9 +70,9 @@ function getPermissions(status, subscriptionType) {
 function getUser(id) {
   return {
     id: id,
-    status: (id) => getUserStatus(id),
-    subscription: (id) => getSubscription(id),
-    permissions: (id) => getPermissions(getUserStatus(id), getSubscription(id).type),
+    status: () => getUserStatus(id),
+    subscription: () => getSubscription(id),
+    permissions: () => getPermissions(getUserStatus(id), getSubscription(id).type),
     name: {
       firstName: 'Name',
       surname: 'Surname',
