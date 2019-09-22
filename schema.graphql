@@ -8,23 +8,23 @@ type Mutation {
 }
 
 enum Status {
-    ACTIVE
-    UNACTIVE
-    BLOCKED
+    Active
+    Unactive
+    Blocked
 }
 
 enum SubscriptionType {
-    NONE
-    BASIC
-    PREMIUM
+    None
+    Basic
+    Premium
 }
 
 enum PermissionType {
-    WRITE_COMMENTS
-    CHANGE_NAME
-    CANCEL_PREMIUM
-    CRY
-    KICK_CHILDREN
+    WriteComments
+    ChangeName
+    CancelPremium
+    Cry
+    KickChildren
 }
 
 type User {

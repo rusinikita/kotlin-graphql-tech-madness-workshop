@@ -33,11 +33,11 @@ export type Permission = {
 };
 
 export enum PermissionType {
-  WriteComments = 'WRITE_COMMENTS',
-  ChangeName = 'CHANGE_NAME',
-  CancelPremium = 'CANCEL_PREMIUM',
-  Cry = 'CRY',
-  KickChildren = 'KICK_CHILDREN'
+  WriteComments = 'WriteComments',
+  ChangeName = 'ChangeName',
+  CancelPremium = 'CancelPremium',
+  Cry = 'Cry',
+  KickChildren = 'KickChildren'
 }
 
 export type Query = {
@@ -52,9 +52,9 @@ export type QueryUserArgs = {
 };
 
 export enum Status {
-  Active = 'ACTIVE',
-  Unactive = 'UNACTIVE',
-  Blocked = 'BLOCKED'
+  Active = 'Active',
+  Unactive = 'Unactive',
+  Blocked = 'Blocked'
 }
 
 export type Subscription = {
@@ -63,9 +63,9 @@ export type Subscription = {
 };
 
 export enum SubscriptionType {
-  None = 'NONE',
-  Basic = 'BASIC',
-  Premium = 'PREMIUM'
+  None = 'None',
+  Basic = 'Basic',
+  Premium = 'Premium'
 }
 
 export type User = {

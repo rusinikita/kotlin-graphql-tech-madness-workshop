@@ -4,19 +4,19 @@ const { importSchema } = require('graphql-import')
 
 const ACCESS_TOKEN_HEADER = "Access"
 
-const STATUS_ACTIVE = 'ACTIVE'
-const STATUS_UNACTIVE = 'UNACTIVE'
-const STATUS_BLOCKED = 'BLOCKED'
+const STATUS_ACTIVE = 'Active'
+const STATUS_UNACTIVE = 'Unactive'
+const STATUS_BLOCKED = 'Blocked'
 
-const SUBSCRIPTION_NONE = 'NONE'
-const SUBSCRIPTION_BASIC = 'BASIC'
-const SUBSCRIPTION_PREMIUM = 'PREMIUM'
+const SUBSCRIPTION_NONE = 'None'
+const SUBSCRIPTION_BASIC = 'Basic'
+const SUBSCRIPTION_PREMIUM = 'Premium'
 
-const PERMISSION_WRITE_COMMENTS = 'WRITE_COMMENTS'
-const PERMISSION_CHANGE_NAME = 'CHANGE_NAME'
-const PERMISSION_CRY = 'CRY'
-const PERMISSION_CANCEL_PREMIUM = 'CANCEL_PREMIUM'
-const PERMISSION_KICK_CHILDREN = 'KICK_CHILDREN'
+const PERMISSION_WRITE_COMMENTS = 'WriteComments'
+const PERMISSION_CHANGE_NAME = 'ChangeName'
+const PERMISSION_CRY = 'Cry'
+const PERMISSION_CANCEL_PREMIUM = 'CancelPremium'
+const PERMISSION_KICK_CHILDREN = 'KickChildren'
 
 // Construct a schema, using GraphQL schema language
 const schema = buildSchema(importSchema(`../schema.graphql`))
