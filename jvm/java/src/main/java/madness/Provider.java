@@ -19,9 +19,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
@@ -40,7 +38,8 @@ public class Provider {
         URL url = Resources.getResource("schema.graphql");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
-        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+        this.graphQL = GraphQL.newGraphQL(graphQLSchema)
+                .build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {
@@ -54,18 +53,28 @@ public class Provider {
         return RuntimeWiring.newRuntimeWiring()
                 .type(
                         newTypeWiring("Query")
-                                .dataFetcher("self", (environment) -> createUser("id", null))
-                                .dataFetcher("user", (environment) -> createUser(environment.getArgument("id"), null))
+                                .dataFetcher("self", (environment) -> {
+                                    Context context = environment.getContext();
+                                    String id = getUserIdFromToken(context.accessToken);
+
+                                    return createUser(id, null);
+                                })
+                                .dataFetcher("user", (environment) -> {
+                                    return createUser(environment.getArgument("id"), null);
+                                })
                 )
                 .type(
                         newTypeWiring("Mutation")
                                 .dataFetcher("updateFullname", (environment) -> {
+                                    Context context = environment.getContext();
+                                    String id = getUserIdFromToken(context.accessToken);
+
                                     Name newName = new Name(
                                             environment.getArgument("firstName"),
                                             environment.getArgument("surname")
                                     );
 
-                                    return createUser("id", newName);
+                                    return createUser(id, newName);
                                 })
                 )
                 .type(
@@ -86,6 +95,10 @@ public class Provider {
                                 })
                 )
                 .build();
+    }
+
+    private String getUserIdFromToken(String tocken) {
+        return tocken.split("_")[1];
     }
 
     private User createUser(String id, Name newName) {
