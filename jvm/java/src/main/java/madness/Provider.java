@@ -9,7 +9,6 @@ import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import madness.entities.Name;
-import madness.entities.Permission;
 import madness.entities.Subscription;
 import madness.entities.User;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +17,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
+import static madness.DummyLogic.*;
 
 @Component
 public class Provider {
@@ -60,7 +58,9 @@ public class Provider {
                                     return createUser(id, null);
                                 })
                                 .dataFetcher("user", (environment) -> {
-                                    return createUser(environment.getArgument("id"), null);
+                                    String id = environment.getArgument("id");
+
+                                    return createUser(id, null);
                                 })
                 )
                 .type(
@@ -81,60 +81,24 @@ public class Provider {
                         newTypeWiring("User")
                                 .dataFetcher("status", (environment) -> {
                                     User user = environment.getSource();
+
                                     return getUserStatus(user.id);
                                 })
                                 .dataFetcher("subscription", (environment) -> {
                                     User user = environment.getSource();
+
                                     return getUserSubscription(user.id);
                                 })
                                 .dataFetcher("permissions", (environment) -> {
                                     User user = environment.getSource();
                                     User.Status status = getUserStatus(user.id);
+                                    // You can fix duplicated logic it using cache data in context,
+                                    // cache in repository or one data fetcher for all user with fields introspection
                                     Subscription subscription = getUserSubscription(user.id);
+
                                     return getPermissions(status, subscription.type);
                                 })
                 )
                 .build();
-    }
-
-    private String getUserIdFromToken(String tocken) {
-        return tocken.split("_")[1];
-    }
-
-    private User createUser(String id, Name newName) {
-        Name name = new Name("FirstName", "Surname");
-        return new User(id, newName != null ? newName : name);
-    }
-
-    private User.Status getUserStatus(String userId) {
-        return User.Status.Active;
-    }
-
-    private Subscription getUserSubscription(String userId) {
-        return new Subscription(Subscription.Type.Basic);
-    }
-
-    private List<Permission> getPermissions(User.Status status, Subscription.Type subscription) {
-        List<Permission> permissions = new ArrayList<>(5);
-
-        // default
-        permissions.add(new Permission(Permission.Type.Cry));
-
-        // active user permissions
-        if (status == User.Status.Active) {
-            permissions.add(new Permission(Permission.Type.ChangeName));
-
-            // subscription based
-            if (subscription != Subscription.Type.None) {
-                permissions.add(new Permission(Permission.Type.WriteComments));
-            }
-
-            if (subscription == Subscription.Type.Premium) {
-                permissions.add(new Permission(Permission.Type.CancelPremium));
-                permissions.add(new Permission(Permission.Type.KickChildren));
-            }
-        }
-
-        return permissions;
     }
 }
