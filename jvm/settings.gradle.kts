@@ -9,4 +9,4 @@
 
 rootProject.name = "jvm"
 
-include("java")
+include("java", "kotlin")

@@ -24,20 +24,18 @@ import static madness.DummyLogic.*;
 @Component
 public class Provider {
 
-    private GraphQL graphQL;
+    final GraphQL graphQL;
 
     @Bean
     public GraphQL graphQL() {
         return graphQL;
     }
 
-    @PostConstruct
-    public void init() throws IOException {
+    public Provider() throws IOException {
         URL url = Resources.getResource("schema.graphql");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
-        this.graphQL = GraphQL.newGraphQL(graphQLSchema)
-                .build();
+        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
     }
 
     private GraphQLSchema buildSchema(String sdl) {

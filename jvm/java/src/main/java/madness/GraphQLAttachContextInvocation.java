@@ -15,8 +15,13 @@ import java.util.concurrent.CompletableFuture;
 @Component
 @Primary
 public class GraphQLAttachContextInvocation implements GraphQLInvocation {
+    final GraphQL graphQL;
+
     @Autowired
-    GraphQL graphQL;
+    public GraphQLAttachContextInvocation(GraphQL graphQL) {
+        this.graphQL = graphQL;
+    }
+
     @Override
     public CompletableFuture<ExecutionResult> invoke(GraphQLInvocationData invocationData, WebRequest webRequest) {
         Context context = new Context(webRequest.getHeader("Access"));
