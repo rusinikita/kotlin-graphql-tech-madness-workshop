@@ -6,7 +6,13 @@ JVM: Java, Scala, Kotlin
 Исходники воркшопа. Цель - ознакомиться с graphql и несколькими технологическими стеками.
 
 Презентация - ссылка
+Другие полезные ссылки
+Руководство для старта graphql на JS
+Руководство для старта graphql на Java
+Утилиты для работы на kotlin без gradle https://github.com/JetBrains/create-react-kotlin-app/tree/master/packages/ts2kt-automator
 
+Старт:
+Установить npm
 
 Тезисы:
 
@@ -37,3 +43,5 @@ JVM: Java, Scala, Kotlin
 - Пишем получения статуса и подписки
 - Пишем "изменение" имени пользователя
 - Пишем получение разрешений
+- Показываю преимущество Kotlin для dsl. Рефакторим java/Provider
+- Показываю преимущество типизации Kotlin. Добавляем новый permission

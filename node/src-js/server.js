@@ -18,9 +18,6 @@ const PERMISSION_CRY = 'Cry'
 const PERMISSION_CANCEL_PREMIUM = 'CancelPremium'
 const PERMISSION_KICK_CHILDREN = 'KickChildren'
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(importSchema(`../schema.graphql`))
-
 function getUserIdFromAccessToken(token) {
   if (!token) {
     throw 'Access token required'
@@ -39,7 +36,7 @@ function getSubscription(id) {
 }
 
 function getPermissions(status, subscriptionType) {
-  let permissions = []
+  const permissions = []
 
   // default
   permissions.push({ type: PERMISSION_CRY })
@@ -69,7 +66,7 @@ function getPermissions(status, subscriptionType) {
 
 function getUser(id) {
   return {
-    id: id,
+    id,
     status: () => getUserStatus(id),
     subscription: () => getSubscription(id),
     permissions: () => getPermissions(getUserStatus(id), getSubscription(id).type),
@@ -82,14 +79,14 @@ function getUser(id) {
 
 function updateUser(id, firstName, surname) {
   return {
-    id: id,
+    id,
     status: (id) => getUserStatus(id),
     subscription: (id) => getSubscription(id),
     permissions: (id) => getPermissions(getUserStatus(id), getSubscription(id).type),
     name: {
       firstName: firstName,
       surname: surname,
-    },
+    }
   }
 }
 
@@ -99,20 +96,20 @@ const resolvers = {
       return getUser(id)
     },
     self(parent, args, context) {
-      let id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
+      const id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
       return getUser(id)
     }
   },
   Mutation: {
     updateFullname(parent, { firstName, surname }, context) {
-      let id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
+      const id = getUserIdFromAccessToken(context.request.get(ACCESS_TOKEN_HEADER))
       return updateUser(id, firstName, surname)
     }
   }
 }
 
 const server = new GraphQLServer({
-  typeDefs: `../schema.graphql`,
+  typeDefs: '../schema.graphql',
   resolvers,
   context: req => ({ ...req }) // context for request information
 })

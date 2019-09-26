@@ -1,6 +1,6 @@
 import { GraphQLServer } from 'graphql-yoga'
-import { Resolvers, User, Status, Subscription, SubscriptionType, PermissionType, UserResolvers } from './generated/schema';
-import { Request, Response } from 'express';
+import { Status, Subscription, SubscriptionType, PermissionType, UserResolvers } from './generated/schema';
+import { Request } from 'express';
 import { IResolvers } from 'graphql-tools';
 
 const ACCESS_TOKEN_HEADER = "Access"
@@ -103,7 +103,7 @@ const resolvers: IResolvers<Context> = {
 }
 
 const server = new GraphQLServer({
-    typeDefs: `../schema.graphql`,
+    typeDefs: '../schema.graphql',
     resolvers,
     context: req => ({ ...req }) // context for request information
 })
