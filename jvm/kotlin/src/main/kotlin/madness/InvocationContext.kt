@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.context.request.WebRequest
 import java.util.concurrent.CompletableFuture
 
-data class Context(val accessToken: String)
+data class Context(val accessToken: String?)
 
 @Component
 @Primary

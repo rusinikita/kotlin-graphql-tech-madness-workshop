@@ -42,7 +42,7 @@ class Provider {
 
                 dataFetcher("self") { environment ->
                     val context = environment.getContext<Context>()
-                    val id = getUserIdFromToken(context.accessToken)
+                    val id = getUserIdFromToken(context.accessToken ?: throw RuntimeException("No access token"))
 
                     createUser(id, null)
                 }
@@ -58,7 +58,7 @@ class Provider {
 
                 dataFetcher("updateFullname") { environment ->
                     val context = environment.getContext<Context>()
-                    val id = getUserIdFromToken(context.accessToken)
+                    val id = getUserIdFromToken(context.accessToken ?: throw RuntimeException("No access token"))
 
                     val newName = Name(
                             environment.getArgument("firstName"),
