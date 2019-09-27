@@ -10,9 +10,7 @@
     "build-ts": "npm run generate-ts && tsc",
     "generate-ts": "graphql-codegen --config codegen.yml",
     "build-kt": "node scripts/build-kt.js",
-    "run-kt": "npm run build-kt && node build-kt/server.js",
-    "load-kt-types": "npm run ktypes-yoga",
-    "ktypes-yoga": "ts2kt -d src-kt/ktypes -p yoga node_modules/graphql-yoga/dist/*.d.ts"
+    "run-kt": "npm run build-kt && node build-kt/server.js"
   },
   "repository": {},
   "author": "me",

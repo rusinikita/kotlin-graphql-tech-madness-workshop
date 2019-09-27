@@ -1,29 +1,50 @@
-# kotlin-graphql-tech-madness-workshop
 It shows implementation of simple graphql server in few stacks.
 Node.js: JS, TypeScript, Kotlin
 JVM: Java, Scala, Kotlin
 
-Исходники воркшопа. Цель - ознакомиться с graphql и несколькими технологическими стеками.
+Исходники воркшопа. Цель - ознакомиться с graphql и несколькими технологическими стеками:
 
-Презентация - ссылка
-Другие полезные ссылки
+- java
+- kotlin jvm
+- javascript
+- typescript
+- kotlin node
+
+Презентация - [ссылка](https://docs.google.com/presentation/d/1xUeiO4_LG3m2ePiuua29Oku5gi5n4tieuq20Mt-0qjc/edit?usp=sharing)
+
 Руководство для старта graphql на JS
 Руководство для старта graphql на Java
-Утилиты для работы на kotlin без gradle https://github.com/JetBrains/create-react-kotlin-app/tree/master/packages/ts2kt-automator
 
-Старт:
-Установить npm
+# Старт:
+- Установить JDK. Рекомендую через [SDKman](https://sdkman.io/jdks#jdk.java.net)
 
-Тезисы:
+На widows устанавливать мануально или через Cygwin
 
-Про qraphql: краткая история и описание, схема, типы, запросы, Query: параметры, Mutation, Context (заголовки и реиспользование), подписки и отложенные части графа
+```
+curl -s "https://get.sdkman.io" | bash
 
-Про node: легко изучить, огромное сообщество, js везде, просто, npm, async/await, express, передавой стек для graphql, apollo+prisma
-Про jvm: годы развития ide, jvm (run everywhere, но docker решает теже проблемы), качество и надёжность библиотек, метапрограммирование, инженерная культура (тесты и автоматизация), multi-thread (говно, но есть)
+В новом окне
+sdk install java
+```
 
-План воркшопа:
+- Установить npm. Рекомендую сделать это через nvm [mac, linux, win/cygwin](https://github.com/nvm-sh/nvm#installation-and-update), [win exe](https://github.com/coreybutler/nvm-windows#installation--upgrades)
 
-Вводная
+На widows устанавливать мануально или через Cygwin
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+В новом окне
+nvm install node
+```
+
+- Клонировать репозиторий
+- Зайти в папку node. Выполнить команду npm i. Выполнить команду `npm run run-kt`
+- Зайти в jvm. Выполнить команду `./gradlew kotlin:boot-run`
+
+# План воркшопа:
+
+### Вводная
 
 - Зачем мы тут, чего ожидать - 2m
 - Теорчасть graphql - 5m
@@ -33,7 +54,7 @@ JVM: Java, Scala, Kotlin
 - Typescript - 2m
 - Kotlin - 5m
 
-Практика
+### Практика
 
 - Смотрим заготовку проекта
     - Общая схема
