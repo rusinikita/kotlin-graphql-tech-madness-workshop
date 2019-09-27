@@ -39,8 +39,8 @@ nvm install node
 ```
 
 - Клонировать репозиторий
-- Зайти в папку node. Выполнить команду npm i. Выполнить команду `npm run run-kt`
-- Зайти в jvm. Выполнить команду `./gradlew kotlin:boot-run`
+- Зайти в папку todo/node. Выполнить команду npm i. Выполнить команду `npm run run-kt`
+- Зайти в todo/jvm. Выполнить команду `./gradlew kotlin:boot-run`
 
 # План воркшопа:
 
